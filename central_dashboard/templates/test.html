@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+
+
+
+    </style>
+    <title>Central Dashboard</title>
+    <style>
+        .camera-wrapper {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            margin-bottom: 20px;
+        }
+
+        .camera-wrapper img, .camera-wrapper canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+
+    </style>
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+</head>
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <div class="w3-container">
+        <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey"
+           title="close menu">
+            <i class="fa fa-remove"></i>
+        </a>
+        <img src="/w3images/avatar_g2.jpg" style="width:45%;" class="w3-round"><br><br>
+        <h4><b>PORTFOLIO</b></h4>
+        <p class="w3-text-grey">Template by W3.CSS</p>
+    </div>
+    <div class="w3-bar-block">
+        <a href="#portfolio" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><i
+                class="fa fa-th-large fa-fw w3-margin-right"></i>PORTFOLIO</a>
+        <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i
+                class="fa fa-user fa-fw w3-margin-right"></i>ABOUT</a>
+        <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i
+                class="fa fa-envelope fa-fw w3-margin-right"></i>CONTACT</a>
+    </div>
+    <div class="w3-panel w3-large">
+        <i class="fa fa-facebook-official w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+        <i class="fa fa-snapchat w3-hover-opacity"></i>
+        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+        <i class="fa fa-twitter w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
+    </div>
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+     title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px">
+
+    <!-- Header -->
+    <header id="portfolio">
+        <a href="#"><img src="/w3images/avatar_g2.jpg" style="width:65px;"
+                         class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+        <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i
+                class="fa fa-bars"></i></span>
+        <div class="w3-container">
+            <h1><b>My Portfolio</b></h1>
+        </div>
+    </header>
+
+    <!-- First Photo Grid-->
+    {% for camera_id, ip in camera_ips.items() %}
+
+    <div class="w3-row-padding">
+        <div class="w3-third w3-container w3-margin-bottom">
+            <div style="background-color: black; color: white; text-align: center; line-height: 200px; /* Adjust this based on your expected image height */">
+                <img id="videoFeed_{{ camera_id }}" src="{{ url_for('proxy_camera_feed', camera_id=camera_id) }}"
+                     alt="Camera 1" style="width:100%" class="w3-hover-opacity" onerror="this.onerror=null; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; this.parentElement.textContent='Loading...';">
+            </div>
+            <canvas id="polygonCanvas_{{ camera_id }}" width="640" height="480"></canvas>
+            <div class="w3-container w3-white w3-center w3-margin-top">
+                <div>
+                    <button class="w3-button w3-black w3-margin-bottom" onclick="savePolygon('{{ camera_id }}')">Save Polygon</button>
+                    <button class="w3-button w3-black w3-margin-bottom" onclick="clearPolygon('{{ camera_id }}')">Clear Drawn Polygon</button>
+                    <button class="w3-button w3-black w3-margin-bottom" onclick="setNoPolygon('{{ camera_id }}')">No Polygon</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+    <!-- Pagination -->
+    <div class="w3-center w3-padding-32">
+        <div class="w3-bar">
+            <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+            <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+            <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-32 w3-dark-grey">
+        <div class="w3-row-padding">
+            <div class="w3-third">
+                <h3>FOOTER</h3>
+                <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies
+                    congue gravida diam non fringilla.</p>
+                <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+            </div>
+
+            <div class="w3-third">
+                <h3>BLOG POSTS</h3>
+                <ul class="w3-ul w3-hoverable">
+                    <li class="w3-padding-16">
+                        <img src="/w3images/workshop.jpg" class="w3-left w3-margin-right" style="width:50px">
+                        <span class="w3-large">Lorem</span><br>
+                        <span>Sed mattis nunc</span>
+                    </li>
+                    <li class="w3-padding-16">
+                        <img src="/w3images/gondol.jpg" class="w3-left w3-margin-right" style="width:50px">
+                        <span class="w3-large">Ipsum</span><br>
+                        <span>Praes tinci sed</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="w3-third">
+                <h3>POPULAR TAGS</h3>
+                <p>
+                    <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">New York</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">London</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">IKEA</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">NORWAY</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">DIY</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Ideas</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">Baby</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">Family</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">News</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">Clothing</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">Shopping</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Sports</span> <span
+                        class="w3-tag w3-grey w3-small w3-margin-bottom">Games</span>
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+                                                                title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a>
+    </div>
+
+    <!-- End page content -->
+</div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+function getCanvasContext(camera_id) {
+    const canvas = document.getElementById(`polygonCanvas_${camera_id}`);
+    return canvas.getContext('2d');
+}
+
+function getPoints(camera_id) {
+    // This function will retrieve the points array for the specific camera
+    // You can implement a mechanism to store and retrieve points for each camera, for simplicity we'll use a global object
+    window.points = window.points || {};
+    window.points[camera_id] = window.points[camera_id] || [];
+    return window.points[camera_id];
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    for (let camera_id of {{ camera_ips.keys()|list|tojson }}) {
+        const canvas = document.getElementById(`polygonCanvas_${camera_id}`);
+        canvas.addEventListener('click', function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.round(event.clientX - rect.left);
+            const y = Math.round(event.clientY - rect.top);
+            const points = getPoints(camera_id);
+            points.push({ x, y });
+            drawPoints(camera_id, points);
+        }, false);
+    }
+});
+
+function drawPoints(camera_id, points) {
+    const ctx = getCanvasContext(camera_id);
+    ctx.clearRect(0, 0, 640, 480);
+    ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 5;
+    for (let point of points) {
+        ctx.lineTo(point.x, point.y);
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(point.x-3, point.y-3, 6, 6);
+    }
+    ctx.closePath();
+    ctx.stroke();
+}
+
+    function savePolygon(camera_id) {
+    const points = getPoints(camera_id);
+    if (points.length < 3) {
+        alert("Please draw a polygon with 3 or more points before saving.");
+        return;
+    }
+
+    const apiUrl = `/api/save_polygon/${camera_id}`;
+
+    $.ajax({
+        url: apiUrl,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ 'points': points }),
+        dataType: 'json',
+        success: function(response) {
+            if(response.success){
+                alert("Polygon saved successfully!");
+                points.length = 0; // Clear the points
+                drawPoints(camera_id, points); // Clear the canvas
+
+            } else {
+                alert("Error saving polygon!");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+            alert("An error occurred while saving the polygon.");
+        }
+    });
+}
+
+function clearPolygon(camera_id) {
+    const points = getPoints(camera_id);
+    points.length = 0;
+    drawPoints(camera_id, points);
+}
+
+function setNoPolygon(camera_id) {
+    const apiUrl = `/api/clear_polygon/${camera_id}`;
+
+    $.ajax({
+        url: apiUrl,
+        type: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            if(response.success){
+                alert("Polygon data cleared successfully!");
+                const points = getPoints(camera_id);
+                points.length = 0; // Clear the points
+                drawPoints(camera_id, points); // Clear the canvas
+
+            } else {
+                alert("Error clearing polygon data!");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+            alert("An error occurred while clearing the polygon data.");
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>

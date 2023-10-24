@@ -1,0 +1,198 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f6f6f6;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+
+
+.camera {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.camera h2 {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:not(:last-child) {
+    margin-right: 10px;
+}
+
+.camera-wrapper {
+    position: relative;
+}
+
+.camera-wrapper img, .camera-wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.add-camera-btn {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white; /* White text */
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Style for the modal */
+.modal {
+    z-index: 50;
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 25%;
+}
+
+.form-modal-add {
+    padding-left:20%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Style the expanding icon */
+.fa-expand {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Styles for the Modal */
+.camera-modal {
+  display: none;
+  position: fixed;
+  z-index: 60;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.9);
+}
+
+.camera-modal-content {
+  margin: auto;
+  display: block;
+  height: 80vh;  /* Sets the width to 80% of the viewport width */
+}
+
+.close {
+  position: absolute;
+  z-index: 1000; /* Add this line */
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.notification {
+    margin-left: 15px;
+    padding: 10px;
+    background-color: #f44336; /* Red by default */
+    color: white;
+    position: relative; /* Relative position for the close button */
+    margin-bottom: 15px; /* Add some space between notifications, if there are multiple */
+    z-index: 1000; /* To ensure it appears above other content */
+    border-radius: 5px;
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notification .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.notification .closebtn:hover {
+    color: black;
+}
+
+/* For different categories of messages, if you use them */
+.notification.info { background-color: #2196F3; }  /* Blue */
+.notification.success { background-color: #4CAF50; } /* Green */
+.notification.warning { background-color: #ff9800; } /* Orange */
+
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+label {
+    flex: 1;
+    padding-right: 10px;
+}
+
+input[type="text"], input[type="password"] {
+    flex: 2;
+    padding: 5px;
+}

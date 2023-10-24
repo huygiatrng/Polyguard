@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif;
+        }
+
+        .camera-wrapper {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            margin-bottom: 20px;
+        }
+
+        .camera-wrapper img, .camera-wrapper canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px">
+
+    <!-- Header -->
+    <header id="portfolio">
+        <!-- The rest of your header remains unchanged... -->
+    </header>
+
+    <!-- Sign Up Page Content -->
+    <div class="w3-row-padding">
+        <div class="m4 w3-container w3-margin-bottom">
+            <h2 class="w3-center">Sign Up</h2>
+            <form method="post" class="w3-container" action="{{ url_for('auth.sign_up_post') }}">
+                <label for="name"><b>Name</b></label>
+                <input class="w3-input w3-border w3-margin-top" type="text" placeholder="Enter Name" name="name"
+                       required>
+
+                <label for="email"><b>Email</b></label>
+                <input class="w3-input w3-border w3-margin-top" type="email" placeholder="Enter Email" name="email"
+                       required>
+
+                <label for="username"><b>Username</b></label>
+                <input class="w3-input w3-border w3-margin-top" type="text" placeholder="Enter Username" name="username"
+                       required>
+
+                <label for="password1"><b>Password</b></label>
+                <input class="w3-input w3-border w3-margin-top" type="password" placeholder="Enter Password"
+                       name="password1" required>
+
+                <label for="password2"><b>Confirm Password</b></label>
+                <input class="w3-input w3-border w3-margin-top" type="password" placeholder="Confirm Password"
+                       name="password2" required>
+
+                <button class="w3-button w3-block w3-teal w3-margin-top" type="submit">Sign Up</button>
+            </form>
+            <span class="w3-text w3-padding w3-small"><a href="/login">Already have an account? Login here</a></span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-32 w3-dark-grey">
+        <!-- The rest of your footer remains unchanged... -->
+    </footer>
+
+    <div class="w3-black w3-center w3-padding-24">
+        Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank"
+                      class="w3-hover-opacity">w3.css</a>
+    </div>
+</div>
+
+<script>
+    // The rest of your scripts remain unchanged...
+
+
+</script>
+
+</body>
+
+</html>
