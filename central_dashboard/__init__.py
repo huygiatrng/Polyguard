@@ -5,7 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Initialize Firebase
-cred = credentials.Certificate('FirestoreDB/polyguard-43608-firebase-adminsdk-oz458-f8bc3bb9e4.json')
+cred = credentials.Certificate('FirestoreDB/DB.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
