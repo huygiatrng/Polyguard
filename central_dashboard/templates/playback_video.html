@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif;
+        }
+
+        .camera-wrapper {
+            position: relative;
+            width: 640px;
+            height: 480px;
+            margin-bottom: 20px;
+        }
+
+        .camera-wrapper img, .camera-wrapper canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <div class="w3-container">
+        <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey"
+           title="close menu">
+            <i class="fa fa-remove"></i>
+        </a>
+        <img src="{{ url_for('static', filename='w3images/avatar_g2.png') }}" style="width:45%;" class="w3-round">
+        <h4><b>POLYGUARD</b></h4>
+        <p class="w3-text-grey">CSC 4980 Team</p>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-primary">Logout</a>
+    </div>
+    <div class="w3-bar-block">
+        <a href="{{ url_for('views.home') }}" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><i
+                class="fa fa-th-large fa-fw w3-margin-right"></i>CAMERAS</a>
+        <a href="{{ url_for('views.playback_video') }}" class="w3-bar-item w3-button w3-padding"><i
+                class="fa fa-video-camera fa-fw w3-margin-right"></i>PLAYBACK</a>
+        <a href="{{ url_for('views.settings') }}" class="w3-bar-item w3-button w3-padding"><i
+                class="fa fa-video-camera fa-fw w3-margin-right"></i>SETTINGS</a>
+        <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><i
+                class="fa fa-envelope fa-fw w3-margin-right"></i>FAQ</a>
+    </div>
+    <div class="w3-panel w3-large">
+        <i class="fa fa-facebook-official w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+        <i class="fa fa-snapchat w3-hover-opacity"></i>
+        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+        <i class="fa fa-twitter w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
+    </div>
+</nav>
+
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px">
+
+    <!-- Header -->
+    <header id="portfolio">
+        <h1><b>Video Playback</b></h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="notification {{ category }}">
+            {{ message }}
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </header>
+
+    <!-- Camera and Date Selection -->
+    <div class="w3-row">
+        <!-- Camera Selection -->
+        <div class="w3-col m6">
+            <div class="w3-container w3-padding">
+                <label for="cameraSelect">Select Camera:</label>
+                <select id="cameraSelect" class="w3-select w3-border" onchange="loadCameraDates()">
+                    <!-- Camera options will be dynamically loaded -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Date Selection -->
+        <div class="w3-col m6">
+            <div class="w3-container w3-padding">
+                <label for="dateSelect">Select Date:</label>
+                <select id="dateSelect" class="w3-select w3-border" onchange="loadVideos()">
+                    <!-- Date options will be dynamically loaded -->
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video List Section -->
+    <div class="w3-container w3-padding">
+        <div id="videoTable" class="w3-row">
+            <!-- Video items will be dynamically loaded -->
+        </div>
+    </div>
+
+    <!-- Video Player Section (Initially Hidden) -->
+    <div id="videoPlayerSection" class="w3-container w3-padding" style="display:none;">
+        <video id="videoPlayer" width="100%" controls>
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+<!-- Footer -->
+    <footer class="w3-container w3-padding-32 w3-dark-grey">
+        <div class="w3-row-padding">
+            <div class="w3-third">
+                <h3>ABOUT US</h3>
+                <p>Harness the power of AI to monitor and manage your surroundings. Our advanced camera system detects
+                    individuals and objects seamlessly within designated polygons.</p>
+                <p>Developed with <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+            </div>
+
+            <div class="w3-third">
+                <h3>LATEST UPDATES</h3>
+                <ul class="w3-ul w3-hoverable">
+                    <li class="w3-padding-16">
+                        <!--                        <img src="/w3images/ai.jpg" class="w3-left w3-margin-right" style="width:50px">-->
+                        <span class="w3-large">AI Integration</span><br>
+                        <span>Enhancing detection accuracy</span>
+                    </li>
+                    <li class="w3-padding-16">
+                        <!--                        <img src="/w3images/camera.jpg" class="w3-left w3-margin-right" style="width:50px">-->
+                        <span class="w3-large">New Camera Models</span><br>
+                        <span>Now supporting 4K and 8K resolutions</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="w3-third">
+                <h3>TECHNOLOGY TAGS</h3>
+                <p>
+                    <span class="w3-tag w3-black w3-margin-bottom">AI</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Object Detection</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Polygon Mapping</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Real-time Monitoring</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Security</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">4K</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">8K</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">IoT</span>
+                    <span class="w3-tag w3-grey w3-small w3-margin-bottom">Smart Integration</span>
+                </p>
+            </div>
+
+        </div>
+    </footer>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        loadCameras();
+    });
+
+    function loadCameras() {
+        const cameras = {{user_cameras|tojson}};
+        const cameraSelect = document.getElementById('cameraSelect');
+
+        cameras.forEach((camera, index) => {
+            const option = document.createElement('option');
+            option.value = camera.id;
+            // Use both nickname and location to display in the option text
+            option.textContent = `${camera.nickname || 'Camera'} - ${camera.location}`;
+            cameraSelect.appendChild(option);
+
+            // Load dates for the first camera by default
+            if (index === 0) {
+                cameraSelect.value = camera.id;
+                loadCameraDates(camera.id);
+            }
+        });
+    }
+
+    // Function to load dates for the selected camera
+    function loadCameraDates(cameraId) {
+        fetch('/api/list_videos/' + cameraId).then(response => response.json()).then(data => {
+            const dateSelect = document.getElementById('dateSelect');
+            dateSelect.innerHTML = '';
+
+            let firstDate = null;
+            for (const date in data.video_list) {
+                if (!firstDate) firstDate = date;
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                dateSelect.appendChild(option);
+            }
+
+            if (firstDate) {
+                dateSelect.value = firstDate;
+                loadVideosForDate(firstDate, cameraId);
+            }
+        });
+    }
+
+
+    // Function to load dates into the dropdown
+    function loadDates() {
+        fetch('/api/list_videos').then(response => response.json()).then(data => {
+            const select = document.getElementById('dateSelect');
+            let firstDate = null;
+
+            for (const date in data) {
+                if (!firstDate) firstDate = date; // Store the first date
+                const option = document.createElement('option');
+                option.value = date;
+                option.textContent = date;
+                select.appendChild(option);
+            }
+
+            if (firstDate) {
+                select.value = firstDate; // Set the dropdown to the first date
+                loadVideosForDate(firstDate); // Load videos for the first date
+            }
+        });
+    }
+    // Function to load videos for a given date
+    function loadVideosForDate(date, cameraId) {
+        const videoTable = document.getElementById('videoTable');
+        videoTable.innerHTML = ''; // Clear existing videos
+
+        fetch(`/api/list_videos/${cameraId}`).then(response => response.json()).then(data => {
+            if (data.success && data.video_list[date]) {
+                data.video_list[date].forEach(filename => {
+                    const videoRow = document.createElement('div');
+                    videoRow.classList.add('w3-row');
+
+                    const playButton = document.createElement('button');
+                    playButton.textContent = `Play ${filename}`;
+                    playButton.classList.add('w3-button', 'w3-green');
+                    playButton.onclick = () => playVideo(cameraId, date, filename);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.classList.add('w3-button', 'w3-red');
+                    deleteButton.onclick = () => deleteVideo(cameraId, date, filename);
+
+                    videoRow.appendChild(playButton);
+                    videoRow.appendChild(deleteButton);
+
+                    videoTable.appendChild(videoRow); // Append the row to the div
+                });
+            } else {
+                console.log("No videos found for the selected date.");
+            }
+        }).catch(error => console.error("Error loading videos:", error));
+    }
+
+    // Function to delete video
+    function deleteVideo(cameraId, date, filename) {
+        if(confirm(`Are you sure you want to delete ${filename}?`)) {
+            fetch(`/api/delete_video/${cameraId}/${date}/${filename}`, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    alert("Video deleted successfully.");
+                    // Check if the deleted video is currently being played
+                    var player = document.getElementById('videoPlayer');
+                    if (player.src.includes(filename)) {
+                        player.src = ""; // Clear the source
+                        document.getElementById('videoPlayerSection').style.display = 'none'; // Hide the player
+                    }
+                    loadVideosForDate(date, cameraId); // Reload the videos
+                } else {
+                    alert("Failed to delete video.");
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting video:", error);
+                // alert("An error occurred while deleting the video.");
+            });
+        }
+    }
+
+    // Function to play video
+    function playVideo(cameraId, date, filename) {
+        var player = document.getElementById('videoPlayer');
+        var videoPlayerSection = document.getElementById('videoPlayerSection');
+        var videoUrl = `/api/serve_video/${cameraId}/${date}/${filename}`;
+        player.src = videoUrl;
+        player.load();
+        player.play();
+        videoPlayerSection.style.display = 'block'; // Show the video player section
+
+        player.onerror = function () {
+            console.error("Error playing video.");
+            // alert("An error occurred while playing the video.");
+        };
+    }
+
+    // Function to load videos for the selected date
+    function loadVideos() {
+        const cameraId = document.getElementById('cameraSelect').value;
+        const date = document.getElementById('dateSelect').value;
+        loadVideosForDate(date, cameraId);
+    }
+
+    // Initial load
+    $(document).ready(function () {
+        loadDates(); // Load dates and videos for the first date
+    });
+</script>
+
+</body>
+</html>

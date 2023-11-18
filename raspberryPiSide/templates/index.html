@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Live streaming</h1>
+<button onclick="savePolygon()">Save Polygon</button>
+<button onclick="clearPolygon()">Clear Drawn Polygon</button>
+<button onclick="setNoPolygon()">No Polygon</button>
+<div>
+    <label for="centroidSlider">Centroid Y-Ratio: <span id="centroidValue">50</span>%</label>
+    <input type="range" id="centroidSlider" min="0" max="100" value="50" oninput="updateSliderValue(this.value)">
+    <button onclick="saveCentroidValue()">Save Centroid Y-Ratio</button>
+</div>
+
+<div>
+    <img id="videoFeed" src="http://127.0.0.1:5001/video_feed" alt="Video Feed from Raspberry Pi"
+         style="position:absolute;">
+    <canvas id="polygonCanvas" width="640" height="480" style="position:absolute;"></canvas>
+</div>
+<script>
+    let points = [];
+    const canvas = document.getElementById('polygonCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.addEventListener('click', function (event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.round(event.clientX - rect.left);
+        const y = Math.round(event.clientY - rect.top);
+        points.push({x, y});
+        drawPoints();
+    }, false);
+
+    function drawPoints() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 5;
+        for (let point of points) {
+            ctx.lineTo(point.x, point.y);
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(point.x - 3, point.y - 3, 6, 6);
+        }
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    function savePolygon() {
+        // Check if there are 3 or more points
+        if (points.length < 3) {
+            alert("Please draw a polygon with 3 or more points before saving.");
+            return;  // Exit the function
+        }
+
+        $.ajax({
+            url: 'save_polygon',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({'points': points}),
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    alert("Polygon saved successfully!");
+
+                    // Clear the points and redraw the empty canvas
+                    points = [];
+                    drawPoints();
+
+                } else {
+                    alert("Error saving polygon!");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("An error occurred while saving the polygon.");
+            }
+        });
+    }
+
+    function clearPolygon() {
+        points = [];
+        drawPoints();
+    }
+
+    function setNoPolygon() {
+        $.ajax({
+            url: 'clear_polygon',  // Assuming this is the endpoint to clear the polygon on the server
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    alert("Polygon data cleared successfully!");
+
+                    // Clear the points and redraw the empty canvas
+                    points = [];
+                    drawPoints();
+
+                } else {
+                    alert("Error clearing polygon data!");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("An error occurred while clearing the polygon data.");
+            }
+        });
+    }
+
+    // Update slider value display
+    function updateSliderValue(value) {
+        document.getElementById('centroidValue').innerText = value;
+    }
+
+    // Save the centroid y-ratio value
+    function saveCentroidValue() {
+        const yRatio = document.getElementById('centroidSlider').value;
+        $.ajax({
+            url: 'update_centroid_y_ratio',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({'y_ratio': parseInt(yRatio)}),
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    alert("Centroid Y-Ratio saved successfully!");
+                    // Reload the slider value
+                    loadCurrentCentroidYRatio();
+                } else {
+                    alert("Error saving Centroid Y-Ratio!");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("An error occurred while saving the Centroid Y-Ratio.");
+            }
+        });
+    }
+
+    function loadCurrentCentroidYRatio() {
+        $.get('/get_centroid_y_ratio', function (response) {
+            if (response.success) {
+                const slider = document.getElementById('centroidSlider');
+                slider.value = response.y_ratio;
+                updateSliderValue(response.y_ratio);
+            }
+        });
+    }
+
+    // Load the current centroid y-ratio value
+    $(document).ready(function () {
+        loadCurrentCentroidYRatio();
+    });
+</script>
+</body>
+</html>

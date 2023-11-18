@@ -68,6 +68,7 @@ class Camera:
 
     @staticmethod
     def get_by_id(camera_id):
+        print(camera_id)
         return db.collection('cameras').document(camera_id).get()
 
 

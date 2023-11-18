@@ -1,0 +1,326 @@
+var loadedCameras = {};
+
+// Functions to handle canvas size, drawing, and polygon saving
+function adjustCanvasSize(camera_id) {
+    var image = document.getElementById("videoFeed_" + camera_id);
+    var canvas = document.getElementById("polygonCanvas_" + camera_id);
+    canvas.width = image.clientWidth;
+    canvas.height = image.clientHeight;
+    loadedCameras[camera_id] = true;
+    attachCanvasClickEvent(camera_id);
+}
+
+function attachCanvasClickEvent(camera_id) {
+        const canvas = document.getElementById(`polygonCanvas_${camera_id}`);
+        canvas.addEventListener('click', function (event) {
+            if (!loadedCameras[camera_id]) {
+                alert('Please wait until the camera feed is loaded.');
+                return;
+            }
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            getPoints(camera_id).push({ x, y });
+            drawPoints(camera_id, getPoints(camera_id));
+        }, false);
+    }
+
+function getCanvasContext(camera_id) {
+    return document.getElementById(`polygonCanvas_${camera_id}`).getContext('2d');
+}
+
+function getPoints(camera_id) {
+    window.points = window.points || {};
+    window.points[camera_id] = window.points[camera_id] || [];
+    return window.points[camera_id];
+}
+
+function drawPoints(camera_id, points) {
+    const ctx = getCanvasContext(camera_id);
+    ctx.clearRect(0, 0, 640, 480);
+    ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 5;
+    points.forEach(function (point) {
+        ctx.lineTo(point.x, point.y);
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(point.x - 3, point.y - 3, 6, 6);
+    });
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function savePolygon(camera_id) {
+        let points = getPoints(camera_id);
+        if (points.length < 3) {
+            alert("Please draw a polygon with 3 or more points before saving.");
+            return;
+        }
+
+        // Get the image and canvas elements
+        const image = document.getElementById("videoFeed_" + camera_id);
+        const canvas = document.getElementById("polygonCanvas_" + camera_id);
+
+        // Calculate scaling factors
+        const xScale = image.naturalWidth / image.clientWidth;
+        const yScale = image.naturalHeight / image.clientHeight;
+
+        // Adjust the points based on the scaling factors
+        points = points.map(pt => ({
+            x: pt.x * xScale,
+            y: pt.y * yScale
+        }));
+
+        const apiUrl = `/api/save_polygon/${camera_id}`;
+
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({'points': points}),
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    alert("Polygon saved successfully!");
+                    // Clear the global points
+                    window.points[camera_id] = [];
+                    drawPoints(camera_id, window.points[camera_id]); // Clear the canvas
+                } else {
+                    alert("Error saving polygon!");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("An error occurred while saving the polygon.");
+            }
+        });
+    }
+
+function clearPolygon(camera_id) {
+    const points = getPoints(camera_id);
+    points.length = 0;
+    drawPoints(camera_id, points);
+}
+
+function setNoPolygon(camera_id) {
+    const apiUrl = `/api/clear_polygon/${camera_id}`;
+
+    $.ajax({
+        url: apiUrl,
+        type: 'POST',
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                alert("Polygon data cleared successfully!");
+                const points = getPoints(camera_id);
+                points.length = 0; // Clear the points
+                drawPoints(camera_id, points); // Clear the canvas
+
+            } else {
+                alert("Error clearing polygon data!");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", error);
+            alert("An error occurred while clearing the polygon data.");
+        }
+    });
+}
+
+// Function to save the centroid y-ratio
+function saveCentroidYRatio(camera_id) {
+    const yRatio = document.getElementById('centroidSlider_' + camera_id).value;
+    // Construct your API URL here. Adjust as needed to match your Flask route.
+    const apiUrl = `/api/update_centroid_y_ratio/${camera_id}`;
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({y_ratio: yRatio})
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('Centroid Y-Ratio updated successfully');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
+// Function to fetch and set centroid y-ratio for a camera
+function loadAndSetCentroidYRatio(camera_id) {
+    const apiUrl = `/api/get_centroid_y_ratio/${camera_id}`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.y_ratio !== undefined) {
+                updateSliderValue(camera_id, data.y_ratio);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function updateSliderValue(camera_id, value) {
+    const slider = document.getElementById('centroidSlider_' + camera_id);
+    if (slider) {
+        slider.value = value;
+    }
+}
+
+function openDeleteModal(cameraId) {
+    currentCameraToDelete = cameraId; // store the current camera ID to be deleted
+    var modal = document.getElementById("deleteConfirmationModal");
+    modal.style.display = "block";
+}
+
+// Script to open and close sidebar
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+// Function to open the camera modal
+function openCameraModal(camera_id) {
+    var modal = document.getElementById("cameraModal");
+    var modalImage = document.getElementById("expandedCamera");
+    var src = document.getElementById("videoFeed_" + camera_id).src;
+
+    modalImage.src = src;
+    modal.style.display = "flex";   // Change display to flex to show it
+}
+
+function closeCameraModal() {
+    var modal = document.getElementById("cameraModal");
+    modal.style.display = "none";  // Hide the modal
+}
+
+var currentCameraToDelete = null;
+
+function closeDeleteModal() {
+    var modal = document.getElementById("deleteConfirmationModal");
+    modal.style.display = "none";
+}
+
+function closeCameraFormModal() {
+    var modal = document.getElementById("cameraFormModal");
+    modal.style.display = "none";
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Iterate over cameras to attach canvas click events
+    var cameraIds = {{ camera_urls.keys() | list | tojson }};
+    cameraIds.forEach(function(camera_id) {
+        loadAndSetCentroidYRatio(camera_id);
+    });
+
+    cameraIds.forEach(function (camera_id) {
+        const canvas = document.getElementById(`polygonCanvas_${camera_id}`);
+        canvas.addEventListener('click', function (event) {
+            if (!loadedCameras[camera_id]) {
+                alert('Please wait until the camera feed is loaded.');
+                return;
+            }
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.round(event.clientX - rect.left);
+            const y = Math.round(event.clientY - rect.top);
+            getPoints(camera_id).push({x, y});
+            drawPoints(camera_id, getPoints(camera_id));
+        }, false);
+
+        // Load the centroid y-ratio for each camera
+        loadAndSetCentroidYRatio(camera_id);
+    });
+
+    // Modal interaction handlers
+    var modal = document.getElementById("cameraFormModal");
+    var btn = document.getElementById("openFormBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function () {
+        console.log("Open button clicked");
+        modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+        console.log("Close button clicked");
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    document.getElementById("confirmDelete").addEventListener("click", function () {
+        // Instead of querying the form with Jinja2, we construct the action URL directly using JavaScript.
+        var form = document.querySelector('form[action="/delete_camera/' + currentCameraToDelete + '"]');
+        if (form) {
+            form.submit();
+        }
+        closeDeleteModal();
+    });
+
+    window.onclick = function (event) {
+        var modal = document.getElementById("deleteConfirmationModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+    // Function to open the camera modal
+    function openCameraModal(camera_id) {
+        var modal = document.getElementById("cameraModal");
+        var modalImage = document.getElementById("expandedCamera");
+        var src = document.getElementById("videoFeed_" + camera_id).src;
+
+        modalImage.src = src;
+        modal.style.display = "flex";   // Change display to flex to show it
+    }
+
+    function closeCameraModal() {
+        var modal = document.getElementById("cameraModal");
+        modal.style.display = "none";  // Hide the modal
+    }
+
+    window.onclick = function (event) {
+        // Close camera form modal if clicked outside
+        var cameraFormModal = document.getElementById("cameraFormModal");
+        if (event.target == cameraFormModal) {
+            cameraFormModal.style.display = "none";
+        }
+
+        // Close camera modal if clicked outside
+        var cameraModal = document.getElementById("cameraModal");
+        if (event.target == cameraModal) {
+            cameraModal.style.display = "none";
+        }
+
+        // Close delete confirmation modal if clicked outside
+        var deleteConfirmationModal = document.getElementById("deleteConfirmationModal");
+        if (event.target == deleteConfirmationModal) {
+            deleteConfirmationModal.style.display = "none";
+        }
+    };
+
+    // For each camera, call adjustCanvasSize once the video feed is loaded
+    cameraIds.forEach(function(camera_id) {
+        var image = document.getElementById("videoFeed_" + camera_id);
+        if (image.complete) {
+            adjustCanvasSize(camera_id);
+        } else {
+            image.onload = function() {
+                adjustCanvasSize(camera_id);
+            };
+        }
+    });
+});

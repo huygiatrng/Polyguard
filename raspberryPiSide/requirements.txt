@@ -1,0 +1,5 @@
+opencv-python
+pillow
+pandas
+pytextnow
+flask_cors

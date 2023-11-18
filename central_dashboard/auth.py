@@ -12,7 +12,6 @@ regex_email = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z
 regex_username = re.compile(r'^[a-zA-Z0-9_.-]+$')
 regex_password = re.compile(r'[A-Za-z0-9@#$]{6,12}')
 
-
 # Validation functions
 def isValidEmail(email):
     return bool(re.fullmatch(regex_email, email))
@@ -24,6 +23,13 @@ def isValidUsername(username):
 
 def isValidPassword(password):
     return bool(re.fullmatch(regex_password, password))
+
+def isValidPhonenumber(phonenumber):
+    try:
+        return int(phonenumber) and len(phonenumber) == 10
+    except:
+        return False
+
 
 
 @auth.route('/login', methods=['GET', 'POST'])
