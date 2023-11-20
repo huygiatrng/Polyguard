@@ -2,6 +2,17 @@ from . import db
 from flask_login import UserMixin
 
 
+class PhoneNumber:
+    @staticmethod
+    def create(user_id, phonenumber, countrycode):
+        _, doc_ref = db.collection('phonenumbers').add({
+            'user_id': user_id,
+            'phonenumber': phonenumber,
+            'countrycode': countrycode,
+        })
+        # After adding, get the newly created user and return it
+        return db.collection('phonenumbers').document(doc_ref.id).get()
+
 class User:
     def __init__(self):
         self.cameras = []

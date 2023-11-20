@@ -93,7 +93,7 @@
         {% endwith %}
 
         <button id="openFormBtn" class="w3-margin-left add-camera-btn"> + Add Camera</button>
-        <button id="phoneFormBtn" class="w3-margin-left add-camera-btn"> + Add Phone Number</button>
+<!--        <button id="phoneFormBtn" class="w3-margin-left add-camera-btn"> + Add Phone Number</button>-->
     </header>
 
 
@@ -568,15 +568,6 @@
         var modal = document.getElementById("cameraFormModal");
         var btn = document.getElementById("openFormBtn");
         var span = document.getElementsByClassName("close")[0];
-
-        var phoneModal = document.getElementById("phoneFormModal")
-        var phoneBtn = document.getElementById("phoneFormBtn")
-
-        phoneBtn.onclick = function () {
-            phoneModal.style.display = "block"
-        }
-
-
 
         btn.onclick = function () {
             console.log("Open button clicked");

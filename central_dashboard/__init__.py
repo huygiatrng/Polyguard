@@ -21,7 +21,7 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
 
     # No need to import models for Firestore like in SQLAlchemy
-    from .models import User, Camera, UserWrapper
+    from .models import User, Camera, UserWrapper, PhoneNumber
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

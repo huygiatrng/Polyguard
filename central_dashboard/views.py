@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, Response, request, redirect, url_for, session, flash
 from flask_login import login_user, login_required, LoginManager, logout_user, current_user
-from .models import Camera, User, UserWrapper
+from .models import Camera, User, UserWrapper, PhoneNumber
 from bcrypt import hashpw, gensalt
 from . import db
 import requests

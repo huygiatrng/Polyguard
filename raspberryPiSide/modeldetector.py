@@ -98,7 +98,9 @@ def detector_generator(cap, model, class_names, size_to_resize=224):
             if recording:
                 stop_video_recording(video_writer, video_filename, start_time, last_detection_time, frame_count)
                 recording = False
-            continue  # Skip recording during cooldown
+            # Yield frame but skip recording logic
+            yield original_frame
+            continue
 
         # Start recording if detected inside polygon
         if detected_inside_polygon:
