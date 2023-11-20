@@ -7,6 +7,8 @@ import os
 import pytextnow
 import firebase_admin
 from firebase_admin import credentials, firestore
+import subprocess
+
 
 cred = credentials.Certificate('FirestoreDB/polyguard-43608-firebase-adminsdk-oz458-f8bc3bb9e4.json')
 firebase_admin.initialize_app(cred)
@@ -46,6 +48,7 @@ def detector_generator(cap, model, class_names, size_to_resize=224):
     cooldown_start_time = None
     video_writer = None
     video_filename = None
+    frame_count = 0
 
     while True:
         ret, original_frame = cap.read()
@@ -93,7 +96,7 @@ def detector_generator(cap, model, class_names, size_to_resize=224):
         # Check for recording cooldown
         if cooldown_start_time and (current_time - cooldown_start_time < datetime.timedelta(seconds=30)):
             if recording:
-                stop_video_recording(video_writer, video_filename, start_time, last_detection_time)
+                stop_video_recording(video_writer, video_filename, start_time, last_detection_time, frame_count)
                 recording = False
             continue  # Skip recording during cooldown
 
@@ -102,19 +105,21 @@ def detector_generator(cap, model, class_names, size_to_resize=224):
             if not recording:
                 if alert_callback:
                     alert_callback(camera_identifier)
+                frame_count = 0
                 recording = True
                 start_time = current_time
                 video_writer, video_filename = start_video_recording(original_frame)
                 print(f"Started recording at {start_time.strftime('%H:%M:%S')}")
             video_writer.write(original_frame)
             last_detection_time = current_time
+            frame_count += 1
 
         # Check if maximum recording time or no detection for 2 seconds
         if recording:
             recording_duration = current_time - start_time
             if recording_duration >= datetime.timedelta(seconds=60) or (
                     current_time - last_detection_time >= datetime.timedelta(seconds=2)):
-                stop_video_recording(video_writer, video_filename, start_time, last_detection_time)
+                stop_video_recording(video_writer, video_filename, start_time, last_detection_time, frame_count)
                 print(f"Stopped recording at {current_time.strftime('%H:%M:%S')}")
 
                 # Check if the maximum recording time was reached to start cooldown
@@ -216,22 +221,6 @@ def get_camera_nickname(identifier):
         camera = camera.to_dict()
         return camera['nickname']
 
-
-# def alert_user():
-#     identifier = camera_identifier
-#     number_entry = find_user_phonenumber_by_camera(identifier)
-#     if number_entry:
-#         if not in_debounce():
-#             camera_nickname = get_camera_nickname(identifier)
-#             number_dict = number_entry.to_dict()
-#             countrycode = number_dict['countrycode']
-#             number = number_dict['phonenumber']
-#             SMS_client.send_sms(f"{countrycode}{number}", f"An intruder has been seen on {camera_nickname}")
-#     else:
-#         print("No phone number on record for this identifier to alert to!")
-
-
-
 # Debounce timer for alerting
 def in_debounce():
     global debounce, last_alert_time
@@ -269,15 +258,29 @@ def start_video_recording(frame):
     return video_writer, video_filename  # Return both the writer and filename
 
 
-def stop_video_recording(video_writer, video_filename, start_time, end_time):
-    # Make sure to release the video writer before renaming the file
+def stop_video_recording(video_writer, video_filename, start_time, end_time, frame_count):
     video_writer.release()
-    new_filename = f"{start_time.strftime('%H-%M-%S')}_{end_time.strftime('%H-%M-%S')}.mp4"
 
-    try:
-        os.rename(video_filename, os.path.join(os.path.dirname(video_filename), new_filename))
-    except PermissionError as e:
-        print(f"Error renaming file: {e}")
+    actual_duration = (end_time - start_time).total_seconds()
+    if actual_duration > 0:
+        new_frame_rate = frame_count / actual_duration
+    else:
+        new_frame_rate = 20.0  # Default frame rate
+
+    new_filename = f"{start_time.strftime('%H-%M-%S')}_{end_time.strftime('%H-%M-%S')}.mp4"
+    temp_filename = video_filename + "_temp.mp4"
+
+    # Use ffmpeg to adjust the frame rate
+    subprocess.run([
+        'ffmpeg', '-i', video_filename, '-r', str(new_frame_rate),
+        '-c', 'copy', temp_filename
+    ])
+
+    # Rename the temporary file to the new file
+    os.rename(temp_filename, os.path.join(os.path.dirname(video_filename), new_filename))
+
+    # Clean up the original file
+    os.remove(video_filename)
 
 
 def create_directory_structure():
