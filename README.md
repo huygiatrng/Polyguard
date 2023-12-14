@@ -23,20 +23,17 @@ Performance and Hardware
 Frame Rate: Achieves 35-40 FPS with 223x223 frame size.
 
 ## Hardware Cost:
-Raspberry Pi 4: $35
-Raspberry Pi AF Camera 5MP OV5647: $3
-Coral AI USB Accelerator: $59.99
-Technology Stack
-Programming: Python, Flask for software and backend development.
-Database: Firebase.
-Web Design: HTML/CSS with Bootstrap and W3Schools.
-Advantages Over MotionEyeOS
-Polyguard surpasses traditional motion detectors like MotionEyeOS by implementing AI-driven computer vision. This allows for the detection of various objects (e.g., dogs, cars) based on the trained model, offering more versatility and precision for surveillance needs.
+- Raspberry Pi 4: $35
+- Raspberry Pi AF Camera 5MP OV5647: $3
+- Coral AI USB Accelerator: $59.99
 
-## Getting Started
-Installation: Detailed steps for setting up the Raspberry Pi with the necessary hardware and software components.
-Configuration: Guidelines on configuring the detection parameters and connecting the device to the dashboard.
-Usage: Instructions on how to use the dashboard for monitoring and managing the detection system.
+## Technology Stack
+- Programming: Python, Flask for software and backend development.
+- Database: Firebase.
+- Web Design: HTML/CSS with Bootstrap and W3Schools.
+
+## Advantages Over MotionEyeOS
+Polyguard surpasses traditional motion detectors like MotionEyeOS by implementing AI-driven computer vision. This allows for the detection of various objects (e.g., dogs, cars) based on the trained model, offering more versatility and precision for surveillance needs.
 
 ## Contribution
 We welcome contributions from the community. Please refer to our contribution guidelines for more information on how to participate in the development of Polyguard.
