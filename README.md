@@ -11,16 +11,16 @@ Polyguard is an innovative project focused on implementing advanced computer vis
 - Centroid Calculation: Utilizes bounding box coordinates (xmin, xmax, ymin, ymax) to determine the centroid point, enhancing detection accuracy.
 - Centroid Ratio: Adjustable ratio (0 to 1) for fine-tuning detection sensitivity, accommodating different camera perspectives.
 ### Dashboard Website
-Access Control: User registration and authentication system.
-Camera Management: Add and configure camera settings using unique identifiers and passwords.
-Customization: Edit detection polygons and centroid ratios remotely.
-Alert System: Option to receive SMS alerts upon person detection.
-Video Playback: Feature to review captured detection footage.
+- Access Control: User registration and authentication system.
+- Camera Management: Add and configure camera settings using unique identifiers and passwords.
+- Customization: Edit detection polygons and centroid ratios remotely.
+- Alert System: Option to receive SMS alerts upon person detection.
+- Video Playback: Feature to review captured detection footage.
 ### Connectivity and Security
-Remote Access: Utilizes ngrok to expose Raspberry Pi securely.
-Enhanced Security: Integration of multiple security services to ensure data protection.
-Performance and Hardware
-Frame Rate: Achieves 35-40 FPS with 223x223 frame size.
+- Remote Access: Utilizes ngrok to expose Raspberry Pi securely.
+- Enhanced Security: Integration of multiple security services to ensure data protection.
+- Performance and Hardware
+- Frame Rate: Achieves 35-40 FPS with 223x223 frame size.
 
 ## Hardware Cost:
 - Raspberry Pi 4: $35
