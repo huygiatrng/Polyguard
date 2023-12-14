@@ -26,7 +26,8 @@ Polyguard is an innovative project focused on implementing advanced computer vis
 - Raspberry Pi 4: $35
 - Raspberry Pi AF Camera 5MP OV5647: $3
 - Coral AI USB Accelerator: $59.99
--  **Total: $97.99 **
+
+**Total: $97.99 **
 
 ## Technology Stack
 - Programming: Python, Flask for software and backend development.
