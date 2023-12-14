@@ -6,10 +6,10 @@ Polyguard is an innovative project focused on implementing advanced computer vis
 ## Key Features
 
 ### Computer Vision Software
-Device: Raspberry Pi 4 with TFlite model and Coral AI USB Accelerator.
-Functionality: Real-time person detection with adjustable detection areas through polygon drawing.
-Centroid Calculation: Utilizes bounding box coordinates (xmin, xmax, ymin, ymax) to determine the centroid point, enhancing detection accuracy.
-Centroid Ratio: Adjustable ratio (0 to 1) for fine-tuning detection sensitivity, accommodating different camera perspectives.
+- Device: Raspberry Pi 4 with TFlite model and Coral AI USB Accelerator.
+- Functionality: Real-time person detection with adjustable detection areas through polygon drawing.
+- Centroid Calculation: Utilizes bounding box coordinates (xmin, xmax, ymin, ymax) to determine the centroid point, enhancing detection accuracy.
+- Centroid Ratio: Adjustable ratio (0 to 1) for fine-tuning detection sensitivity, accommodating different camera perspectives.
 ### Dashboard Website
 Access Control: User registration and authentication system.
 Camera Management: Add and configure camera settings using unique identifiers and passwords.
