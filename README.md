@@ -1,45 +1,46 @@
-# Polyguard - IoT Device and Computer Vision Implementation on Raspberry Pi 4
+# Polyguard: Advanced IoT and Computer Vision on Raspberry Pi 4
 
-![image](https://github.com/huygiatrng/Polyguard/assets/67343196/ecbd9211-4ee5-4db6-a64b-decafa79d7ac)
+![Polyguard Project Image](https://github.com/huygiatrng/Polyguard/assets/67343196/ecbd9211-4ee5-4db6-a64b-decafa79d7ac)
 
-## Overview
-Polyguard is an innovative project focused on implementing advanced computer vision technology on Internet of Things (IoT) devices. Utilizing YOLOv5 with TensorFlow Lite models, Polyguard leverages the power of Coral AI's Accelerator USB as an Edge TPU, running on a Raspberry Pi 4. This project is designed to enhance surveillance and monitoring systems by providing precise and adaptable person detection capabilities.
+## Introduction
+Polyguard stands at the forefront of integrating cutting-edge computer vision technology with Internet of Things (IoT) devices. Our project harnesses the capabilities of YOLOv5 and TensorFlow Lite models, optimized with Coral AI's Accelerator USB for Edge TPU computations on Raspberry Pi 4. Polyguard's mission is to revolutionize surveillance and monitoring systems by introducing high-precision, adaptable person detection technologies.
 
-## Key Features
+## Core Features
 
-### Computer Vision Software
-- Device: Raspberry Pi 4 with TFlite model and Coral AI USB Accelerator.
-- Functionality: Real-time person detection with adjustable detection areas through polygon drawing.
-- Centroid Calculation: Utilizes bounding box coordinates (xmin, xmax, ymin, ymax) to determine the centroid point, enhancing detection accuracy.
-- Centroid Ratio: Adjustable ratio (0 to 1) for fine-tuning detection sensitivity, accommodating different camera perspectives.
-### Dashboard Website
-- Access Control: User registration and authentication system.
-- Camera Management: Add and configure camera settings using unique identifiers and passwords.
-- Customization: Edit detection polygons and centroid ratios remotely.
-- Alert System: Option to receive SMS alerts upon person detection.
-- Video Playback: Feature to review captured detection footage.
-### Connectivity and Security
-- Remote Access: Utilizes ngrok to expose Raspberry Pi securely.
-- Enhanced Security: Integration of multiple security services to ensure data protection.
-- Performance and Hardware
-- Frame Rate: Achieves 35-40 FPS with 223x223 frame size.
+### Advanced Computer Vision
+- **Hardware**: Raspberry Pi 4 coupled with TensorFlow Lite model and Coral AI USB Accelerator.
+- **Real-time Detection**: Immediate person detection with customizable detection zones via polygon drawing.
+- **Precision Tracking**: Employs bounding box coordinates for pinpoint centroid calculations, ensuring superior detection accuracy.
+- **Sensitivity Tuning**: Fine-tune detection with adjustable centroid ratios, accommodating diverse camera angles.
 
-## Hardware Cost:
-- Raspberry Pi 4: $35
-- Raspberry Pi AF Camera 5MP OV5647: $3
-- Coral AI USB Accelerator: $59.99
-- **Total: $97.99**
+### Interactive Dashboard
+- **User Management**: Secure user registration and authentication.
+- **Camera Configuration**: Hassle-free camera setup with unique identifiers.
+- **Customizable Surveillance**: Modify detection zones and sensitivity settings remotely.
+- **Alert System**: SMS notifications upon person detection.
+- **Footage Review**: Convenient video playback for detection events.
 
-## Technology Stack
-- Programming: Python, Flask for software and backend development.
-- Database: Firebase.
-- Web Design: HTML/CSS with Bootstrap and W3Schools.
+### Connectivity and Enhanced Security
+- **Remote Accessibility**: Secure Raspberry Pi exposure through ngrok.
+- **Robust Security**: Integration of advanced security measures for data protection.
+- **Optimized Performance**: Smooth operation at 35-40 FPS with 223x223 frame resolution.
 
-## Advantages Over MotionEyeOS
-Polyguard surpasses traditional motion detectors like MotionEyeOS by implementing AI-driven computer vision. This allows for the detection of various objects (e.g., dogs, cars) based on the trained model, offering more versatility and precision for surveillance needs.
+## Hardware and Cost Breakdown
+- **Raspberry Pi 4**: $35
+- **Raspberry Pi AF Camera 5MP OV5647**: $3
+- **Coral AI USB Accelerator**: $59.99
+- **Total Investment**: $97.99
 
-## Contribution
-We welcome contributions from the community. Please refer to our contribution guidelines for more information on how to participate in the development of Polyguard.
+## Tech Stack & Tools
+- **Programming**: Python, Flask.
+- **Database Management**: Firebase.
+- **Web Development**: HTML/CSS with Bootstrap and W3Schools.
 
-## Acknowledgments
-A special thanks to the developers and contributors who have made Polyguard a reality. Your dedication and expertise have been instrumental in bringing this project to life.
+## Superiority over Traditional Systems
+Polyguard transcends conventional motion detection systems like MotionEyeOS by leveraging AI-driven vision technology. This approach allows for identifying various objects (e.g., people, animals, vehicles), offering unparalleled flexibility and accuracy in surveillance.
+
+## Community Contributions
+Your expertise can help shape Polyguard's future. We invite contributions and suggest reviewing our guidelines for details on collaborating.
+
+## Acknowledgements
+Heartfelt thanks to the dedicated team and community behind Polyguard. Your contributions and skills are the pillars of this innovative project.
