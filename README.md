@@ -1,6 +1,6 @@
 # Polyguard: Advanced IoT and Computer Vision on Raspberry Pi 4
 
-![Polyguard Project Image](https://github.com/huygiatrng/Polyguard/assets/67343196/ecbd9211-4ee5-4db6-a64b-decafa79d7ac)
+![image](https://github.com/user-attachments/assets/84d95493-06b1-4837-9422-a45dba74a9a6)
 
 ## Introduction
 Polyguard stands at the forefront of integrating cutting-edge computer vision technology with Internet of Things (IoT) devices. Our project harnesses the capabilities of YOLOv5 and TensorFlow Lite models, optimized with Coral AI's Accelerator USB for Edge TPU computations on Raspberry Pi 4. Polyguard's mission is to revolutionize surveillance and monitoring systems by introducing high-precision, adaptable person detection technologies.
